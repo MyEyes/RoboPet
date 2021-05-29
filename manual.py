@@ -4,7 +4,7 @@ import config
 from sensor import Sensor
 
 loco = Locomotion()
-sense = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO)
+sense = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO, config.SENSOR1_MAXDIST)
 
 while True:
     data = input()
