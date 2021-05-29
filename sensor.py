@@ -24,5 +24,5 @@ class Sensor:
         while GPIO.input(self.echo)==1:
             pulse_end_time = time.time()
 
-    pulse_duration = pulse_end_time - pulse_start_time
-    return pulse_duration * self.speed_of_sound
+        pulse_duration = pulse_end_time - pulse_start_time
+        return pulse_duration * self.speed_of_sound
