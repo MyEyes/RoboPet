@@ -1,7 +1,10 @@
 from locomotion import Locomotion
 import time
+import config
+from sensor import Sensor
 
 loco = Locomotion()
+sense = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO)
 
 while True:
     data = input()
@@ -13,5 +16,7 @@ while True:
         loco.tightRight()
     if 's' in data:
         loco.backward()
+    if 'm' in data:
+        print(sense.measure())
     time.sleep(0.5)
     loco.stop()
