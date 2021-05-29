@@ -10,4 +10,5 @@ while True:
     loco.tightLeft()
     time.sleep(0.01)
     loco.stop()
+    time.sleep(0.02)
     print(sense.measure())
