@@ -2,11 +2,12 @@ import RPi.GPIO as GPIO
 import time
 
 class Sensor:
-    def __init__(self, triggerpin, echopin):
+    def __init__(self, triggerpin, echopin, max_dist):
         self.trigger = triggerpin
         self.echo = echopin
         self.speed_of_sound = 343.26
         self.timeout = 2
+        self.max_dist = max_dist
         GPIO.setup(self.trigger, GPIO.OUT)
         GPIO.setup(self.echo, GPIO.IN)
         GPIO.output(self.trigger, GPIO.LOW)
@@ -25,4 +26,7 @@ class Sensor:
             pulse_end_time = time.time()
 
         pulse_duration = pulse_end_time - pulse_start_time
-        return pulse_duration * self.speed_of_sound
+        dist = pulse_duration * self.speed_of_sound
+        if(dist>self.max_dist):
+            return None
+        return dist
