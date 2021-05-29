@@ -29,7 +29,6 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
         
 
     def on_welcome(self, c, e):
-        print 'Joining ' + self.channel
 
         # You must request specific capabilities before you can use them
         c.cap('REQ', ':twitch.tv/membership')
