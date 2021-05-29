@@ -7,47 +7,21 @@ import time
 import config
 from sensor import Sensor
 
+from twitchio.ext import commands
+
 loco = Locomotion()
 sense = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO, config.SENSOR1_MAXDIST)
 
-class TwitchBot(irc.bot.SingleServerIRCBot):
-    def __init__(self, username, client_id, token, channel):
-        self.client_id = client_id
-        self.token = token
-        self.channel = '#' + channel
+bot = commands.Bot(
+    # set up the bot
+    irc_token=os.environ['TMI_TOKEN'],
+    client_id=os.environ['CLIENT_ID'],
+    nick=os.environ['BOT_NICK'],
+    prefix=os.environ['BOT_PREFIX'],
+    initial_channels=[os.environ['CHANNEL']]
+)
 
-        # Get the channel id, we will need this for v5 API calls
-        url = 'https://api.twitch.tv/kraken/users?login=' + channel
-        headers = {'Client-ID': client_id, 'Accept': 'application/vnd.twitchtv.v5+json'}
-        r = requests.get(url, headers=headers).json()
-        self.channel_id = r['users'][0]['_id']
-
-        # Create IRC bot connection
-        server = 'irc.chat.twitch.tv'
-        port = 6667
-        print('Connecting to ' + server + ' on port ' + str(port) + '...')
-        irc.bot.SingleServerIRCBot.__init__(self, [(server, port, 'oauth:'+token)], username, username)
-        
-
-    def on_welcome(self, c, e):
-        print('Joining ' + self.channel)
-
-        # You must request specific capabilities before you can use them
-        c.cap('REQ', ':twitch.tv/membership')
-        c.cap('REQ', ':twitch.tv/tags')
-        c.cap('REQ', ':twitch.tv/commands')
-        c.join(self.channel)
-
-    def on_pubmsg(self, c, e):
-
-        # If a chat message starts with an exclamation point, try to run it as a command
-        if e.arguments[0][:1] == '!':
-            cmd = e.arguments[0][1:]
-            self.do_command(e, cmd)
-        return
-
-    def do_command(self, e, cmd):
-        c = self.connection
+def do_command(cmd):
         data = cmd
         for c in cmd:
             if 'w' == c:
@@ -63,18 +37,17 @@ class TwitchBot(irc.bot.SingleServerIRCBot):
             time.sleep(0.1)
             loco.stop()
 
-def main():
-    if len(sys.argv) != 5:
-        print("Usage: twitchbot <username> <client id> <token> <channel>")
-        sys.exit(1)
+@bot.event
+async def event_ready():
+    print(f"{os.environ['BOT_NICK']} is online!")
 
-    username  = sys.argv[1]
-    client_id = sys.argv[2]
-    token     = sys.argv[3]
-    channel   = sys.argv[4]
+@bot.event
+async def event_message(ctx):
+    if ctx.author.name.lower() == os.environ['BOT_NICK'].lower():
+        return
 
-    bot = TwitchBot(username, client_id, token, channel)
-    bot.start()
+    if ctx.content[:1] == '!':
+        do_command(ctx.content[1:])
 
 if __name__ == "__main__":
-    main()
+    bot.run()
