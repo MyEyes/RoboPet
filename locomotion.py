@@ -3,8 +3,8 @@ from gpiozero import Motor
 
 class Locomotion:
     def __init__(self):
-        self.motorL = Motor(config.MOTOR1_IN1, config.MOTOR1_IN2, enable = config.MOTOR1_EN)
-        self.motorR = Motor(config.MOTOR2_IN1, config.MOTOR2_IN2, enable = config.MOTOR2_EN)
+        self.motorR = Motor(config.MOTOR1_IN1, config.MOTOR1_IN2, enable = config.MOTOR1_EN)
+        self.motorL = Motor(config.MOTOR2_IN1, config.MOTOR2_IN2, enable = config.MOTOR2_EN)
 
     def justifyPower(self, power):
         if power>1:
