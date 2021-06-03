@@ -5,6 +5,8 @@ from sensor import Sensor
 
 loco = Locomotion()
 sense = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO, config.SENSOR1_MAXDIST)
+senseL = Sensor(config.SENSOR_L_TRIGGER, config.SENSOR_L_ECHO, config.SENSOR_L_MAXDIST)
+senseR = Sensor(config.SENSOR_R_TRIGGER, config.SENSOR_R_ECHO, config.SENSOR_R_MAXDIST)
 
 while True:
     data = input()
@@ -17,6 +19,6 @@ while True:
     if 's' in data:
         loco.backward()
     if 'm' in data:
-        print(sense.measure())
+        print(senseL.measure(), sense.measure(), senseR.measure())
     time.sleep(0.5)
     loco.stop()
