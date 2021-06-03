@@ -8,17 +8,17 @@ def robot_run():
     sensor = Sensor(config.SENSOR1_TRIGGER, config.SENSOR1_ECHO, config.SENSOR1_MAXDIST)
     while True:
         dist = sensor.measure()
-        while dist>0.1:
+        while dist and dist>0.1:
             locomotion.forward(0.7)
             dist = sensor.measure()
         locomotion.stop()
         maxDist = dist
-        while dist < 1:
+        while dist and dist < 1:
             locomotion.tightRight()
             time.sleep(0.1)
             locomotion.stop()
             dist = sensor.measure()
-            if dist>maxDist:
+            if dist and dist>maxDist:
                 maxDist = dist
 
 if __name__ == "__main__":
