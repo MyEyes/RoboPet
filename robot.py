@@ -9,9 +9,9 @@ def minDist(senseL, senseC, senseR):
     distL = senseL.measure()
     distR = senseR.measure()
     distC = senseC.measure()
-    if distL and distL<distR and distL<distC:
+    if distL and (not distR or distL<distR) and (not distL or distL<distC):
         return distL
-    if distR and distR<distL and distR<distC:
+    if distR and (not distL or distR<distL) and (not distC or distR<distC):
         return distR
     if distC:
         return distC
