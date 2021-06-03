@@ -21,5 +21,5 @@ def robot_run():
             if dist>maxDist:
                 maxDist = dist
 
-if __file__ == "main":
+if __file__ == "__main__":
     robot_run()
