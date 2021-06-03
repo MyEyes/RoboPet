@@ -33,7 +33,7 @@ def robot_run():
 
             distL = senseL.measure()
             distR = senseR.measure()
-            if(distL<distR):
+            if(not distR or not distL or distL<distR):
                 locomotion.tightRight(0.7)
             else:
                 locomotion.tightLeft(0.7)
